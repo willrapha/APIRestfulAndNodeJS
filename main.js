@@ -2,6 +2,10 @@ const fatorial = require('./fatorial')
 
 console.log('n-fatorial')
 
+// yargs
+// criamos um parametro chamado 'num' e pegamos seus argumentos
+const argv = require('yargs').demandOption('num').argv
+
 /* 
 // process.cwd() - diretorio atual
 console.log(`Executando o script a partir do diretorio ${process.cwd()}`)
@@ -16,7 +20,7 @@ process.on('exit', () => {
 // process.argv - traz os argumentos que foram utilizados para iniciar o script
 //console.log(process.argv)
 
-const num = parseInt(process.argv[2])
+const num = argv.num
 
 console.log(`O fatorial de ${num} é igual a ${fatorial(num)}`)
 

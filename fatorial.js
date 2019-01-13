@@ -1,5 +1,5 @@
 // module.id - caminho completo do arquivo
-console.log(module.id)
+// console.log(module.id)
 
 const fatorial = (num) => {
     if(num === 0){
