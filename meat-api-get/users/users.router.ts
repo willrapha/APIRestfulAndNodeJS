@@ -1,6 +1,7 @@
 import { Router } from "../common/router";
 import * as restify from 'restify';
 import { User } from './users.model';
+import { response } from "spdy";
 
 class UsersRouter extends Router {
 
@@ -11,7 +12,19 @@ class UsersRouter extends Router {
                 resp.json(users);
                 return next();
             })
-        })
+        });
+
+        application.get('/users/:id', (req, resp, next) => {
+            User.findById(req.params.id).then(user => {
+                if(user){
+                    resp.json(user);
+                    return next();
+                }
+
+                resp.send(404);
+                return next();
+            })
+        });
 
     }
 }
