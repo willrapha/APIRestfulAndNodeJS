@@ -19,5 +19,9 @@
   "homepage": "https://github.com/willrapha/APIRestfulAndNodeJS#readme",
   "dependencies": {
     "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "@types/yargs": "^12.0.5"
   }
 }
