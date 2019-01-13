@@ -13,3 +13,4 @@ fs.writeFile(argv.filename, argv.content, (error) => {
         throw error;
     console.log(`Arquivo ${argv.filename} foi salvo com sucesso.`);
 });
+//# sourceMappingURL=save-file.js.map
