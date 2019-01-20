@@ -12,7 +12,7 @@ class UsersRouter extends Router {
                 return next();
             })
         });
-
+ 
         application.get('/users/:id', (req, resp, next) => {
             User.findById(req.params.id).then(user => {
                 if(user){
@@ -31,6 +31,21 @@ class UsersRouter extends Router {
             
             user.save().then(user => { // o metodo save() retorna uma promisse
                 user.password  = undefined; // limpamos o passwrod para nao ser mostrado na resposta
+                resp.json(user);
+                return next();
+            });
+        });
+
+        application.put('/users/:id', (req, resp, next) => {
+            const options = {overwrite:true}; // possibilita alterar todo o objeto invés do parcial
+            // exec() - chamamos o metodo exec() para executar os comandos e retornar o resultado
+            User.update({_id: req.params.id}, req.body, options).exec().then( result => {
+                if(result.n){ // se foi atualizado algum documento
+                    return <any>User.findById(req.params.id); // outra promisse
+                }else{
+                    resp.send(404); // nao encontrado
+                }
+            }).then(user => { // tratando segunda promisse
                 resp.json(user);
                 return next();
             });

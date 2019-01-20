@@ -29,6 +29,21 @@ class UsersRouter extends router_1.Router {
                 return next();
             });
         });
+        application.put('/users/:id', (req, resp, next) => {
+            const options = { overwrite: true }; // possibilita alterar todo o objeto invés do parcial
+            // exec() - chamamos o metodo exec() para executar os comandos e retornar o resultado
+            users_model_1.User.update({ _id: req.params.id }, req.body, options).exec().then(result => {
+                if (result.n) { // se foi atualizado algum documento
+                    return users_model_1.User.findById(req.params.id); // outra promisse
+                }
+                else {
+                    resp.send(404); // nao encontrado
+                }
+            }).then(user => {
+                resp.json(user);
+                return next();
+            });
+        });
     }
 }
 exports.usersRouter = new UsersRouter();
