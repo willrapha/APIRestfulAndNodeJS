@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
+const validators_1 = require("../common/validators");
 // Esquema de usuario - serve para informar ao mongoose quais sao os metadados desse documento
 const userSchema = new mongoose.Schema({
     name: {
@@ -24,6 +25,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         enum: ['Male', 'Female'] // Apenas esses valores
+    },
+    cpf: {
+        type: String,
+        required: false,
+        validate: {
+            validator: validators_1.validateCPF,
+            message: '{PATH}: Invalid CPF ({VALUE})' // campo template string
+        }
     }
 });
 // Parametros - Model Class

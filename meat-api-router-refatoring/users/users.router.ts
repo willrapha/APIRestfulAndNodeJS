@@ -49,7 +49,7 @@ class UsersRouter extends Router {
         });
 
         application.patch('/users/:id', (req, resp, next) => {
-            const options = {new : true}; // força o retorno do objeto novo
+            const options = {new : true}; // força o retorno do objeto atualizado
             // findByIdAndUpdate - retorna o objeto user antes da atualizacao
             User.findByIdAndUpdate(req.params.id, req.body, options)
                 .then(this.render(resp,next))

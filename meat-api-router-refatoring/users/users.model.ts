@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { validateCPF } from '../common/validators';
 
 // extendemos o mongoose.Document para pegar as propriedades padroes de um documento mongoose
 // interface apenas para controle estatico
@@ -31,6 +32,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         enum: ['Male', 'Female'] // Apenas esses valores
+    },
+    cpf: {
+        type: String,
+        required: false,
+        validate: { // validador personalizado
+            validator: validateCPF,
+            message: '{PATH}: Invalid CPF ({VALUE})' // campo template string
+        }
     }
 
 })
