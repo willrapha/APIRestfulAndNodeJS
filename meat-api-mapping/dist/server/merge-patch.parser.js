@@ -8,7 +8,7 @@ exports.mergePatchBodyParser = (req, resp, next) => {
         // Guardamos uma copia do nosso body antes do cast
         req.rawBody = req.body;
         try {
-            req.body = JSON.parse(req.body);
+            req.body = JSON.parse(req.body); // cast para json
         }
         catch (e) {
             return next(new Error(`Invalid content: ${e.message}`));

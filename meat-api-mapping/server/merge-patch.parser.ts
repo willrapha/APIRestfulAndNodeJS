@@ -9,7 +9,7 @@ export const mergePatchBodyParser = (req: restify.Request, resp: restify.Respons
         // Guardamos uma copia do nosso body antes do cast
         (<any>req).rawBody = req.body;
         try {
-            req.body = JSON.parse(req.body);
+            req.body = JSON.parse(req.body); // cast para json
         } catch (e) {
             return next(new Error(`Invalid content: ${e.message}`));
         }

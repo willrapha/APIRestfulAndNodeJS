@@ -56,7 +56,20 @@ class UsersRouter extends router_1.Router {
                 return next();
             });
         });
+        application.del('users/:id', (req, resp, next) => {
+            // exec() - chamamos o metodo exec() para executar os comandos e retornar o resultado
+            users_model_1.User.remove({ _id: req.params.id }).exec().then((cmdResult) => {
+                if (cmdResult.result.n) { // se foi removido algum documento
+                    resp.send(204);
+                }
+                {
+                    resp.send(404);
+                }
+                return next();
+            });
+        });
     }
+    ;
 }
 exports.usersRouter = new UsersRouter();
 //# sourceMappingURL=users.router.js.map

@@ -31,7 +31,6 @@ export class Server {
                 // por isso precisamos de utilizar esses plugins para fazer a conversao
                 this.application.use(restify.plugins.queryParser()) 
                 this.application.use(restify.plugins.bodyParser())
-
                 this.application.use(mergePatchBodyParser); // Para o verbo PATCH
 
                 // routes
