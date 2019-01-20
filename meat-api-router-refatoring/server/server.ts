@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import { environment } from '../common/environment';
 import { Router } from '../common/router';
 import { mergePatchBodyParser } from './merge-patch.parser';
+import { handleError } from './error.handler';
 
 export class Server {
 
@@ -35,13 +36,16 @@ export class Server {
 
                 // routes
                 for (let router of routers){
-                    router.applyRoutes(this.application)
+                    router.applyRoutes(this.application);
                 }
 
-                // se nao conseguimos acesso a porta por nao tratarmos o erro a aplicacao vai parar de funcionar
+                // se nao conseguirmos acesso a porta por nao tratarmos o erro a aplicacao vai parar de funcionar
                 this.application.listen(environment.server.port, () =>{
-                    resolve(this.application)
-                })
+                    resolve(this.application);
+                });
+
+                // Utilizada para o tratamento de erros do restify
+                this.application.on('restifyError', handleError);
 
             }catch(error){
                 reject(error)

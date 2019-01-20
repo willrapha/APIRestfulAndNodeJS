@@ -4,6 +4,7 @@ const restify = require("restify");
 const mongoose = require("mongoose");
 const environment_1 = require("../common/environment");
 const merge_patch_parser_1 = require("./merge-patch.parser");
+const error_handler_1 = require("./error.handler");
 class Server {
     initializeDb() {
         // fizemos um cast devido ao erro de typescript
@@ -30,10 +31,12 @@ class Server {
                 for (let router of routers) {
                     router.applyRoutes(this.application);
                 }
-                // se nao conseguimos acesso a porta por nao tratarmos o erro a aplicacao vai parar de funcionar
+                // se nao conseguirmos acesso a porta por nao tratarmos o erro a aplicacao vai parar de funcionar
                 this.application.listen(environment_1.environment.server.port, () => {
                     resolve(this.application);
                 });
+                // Utilizada para o tratamento de erros do restify
+                this.application.on('restifyError', error_handler_1.handleError);
             }
             catch (error) {
                 reject(error);
