@@ -2,6 +2,7 @@ import * as restify from 'restify';
 import * as mongoose from 'mongoose';
 import { environment } from '../common/environment';
 import { Router } from '../common/router';
+import { mergePatchBodyParser } from './merge-patch.parser';
 
 export class Server {
 
@@ -25,10 +26,13 @@ export class Server {
                     version: '1.0.0'
                 })
 
+                // acionados a todo momento
                 // por padrao o restify nao faz a conversao das query e do body para json
                 // por isso precisamos de utilizar esses plugins para fazer a conversao
-                this.application.use(restify.plugins.queryParser()) // acionado a todo momento
+                this.application.use(restify.plugins.queryParser()) 
                 this.application.use(restify.plugins.bodyParser())
+
+                this.application.use(mergePatchBodyParser); // Para o verbo PATCH
 
                 // routes
                 for (let router of routers){

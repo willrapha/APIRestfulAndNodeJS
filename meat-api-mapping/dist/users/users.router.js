@@ -44,6 +44,18 @@ class UsersRouter extends router_1.Router {
                 return next();
             });
         });
+        application.patch('users/:id', (req, resp, next) => {
+            const options = { new: true }; // força o retorno do objeto novo
+            // findByIdAndUpdate - retorna o objeto user antes da atualizacao
+            users_model_1.User.findByIdAndUpdate(req.params.id, req.body, options).then(user => {
+                if (user) {
+                    resp.json(user);
+                    return next();
+                }
+                resp.send(404);
+                return next();
+            });
+        });
     }
 }
 exports.usersRouter = new UsersRouter();
