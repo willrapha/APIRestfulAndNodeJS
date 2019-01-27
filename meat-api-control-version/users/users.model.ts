@@ -11,6 +11,11 @@ export interface User extends mongoose.Document {
     password: string
 }
 
+// Necessario para checagem do typescript 
+export interface UserModel extends mongoose.Model<User>{
+    findByEmail(email:string): Promise<User>;
+}
+
 // Esquema de usuario - serve para informar ao mongoose quais sao os metadados desse documento
 const userSchema = new mongoose.Schema({
     name: {
@@ -44,6 +49,13 @@ const userSchema = new mongoose.Schema({
         }
     }
 })
+
+// nao recomendado o IronFunctions
+// statics - podemos adicionar metodos
+userSchema.statics.findByEmail = function(email: string){
+    return this.findOne({email}) // {email: email}
+}
+
 const hashPassword = (obj, next) => {
     // saltRounds - numero de rounds, ciclos para geração do hash
     bcrypt.hash(obj.password, environment.security.saltRounds)
@@ -79,4 +91,4 @@ userSchema.pre('update', updateMiddleware); // 'query'
 // Parametros - Model Class
 // 1 - nome que daremos a model
 // 2- o schema
-export const User = mongoose.model<User>('User', userSchema) // Esse que sera exportado
+export const User = mongoose.model<User, UserModel>('User', userSchema) // Esse que sera exportado

@@ -37,6 +37,11 @@ const userSchema = new mongoose.Schema({
         }
     }
 });
+// nao recomendado o IronFunctions
+// statics - podemos adicionar metodos
+userSchema.statics.findByEmail = function (email) {
+    return this.findOne({ email }); // {email: email}
+};
 const hashPassword = (obj, next) => {
     // saltRounds - numero de rounds, ciclos para geração do hash
     bcrypt.hash(obj.password, environment_1.environment.security.saltRounds)
