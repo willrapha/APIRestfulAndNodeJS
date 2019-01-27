@@ -1,7 +1,5 @@
-import { Router } from "../common/router";
 import * as restify from 'restify';
 import { User } from './users.model';
-import { NotFoundError } from 'restify-errors';
 import { ModelRouter } from '../common/model-router';
 
 class UsersRouter extends ModelRouter<User> {
@@ -14,7 +12,6 @@ class UsersRouter extends ModelRouter<User> {
     }
 
     applyRoutes(application: restify.Server){
-
         // Rotas
         application.get('/users', this.findAll);
         application.get('/users/:id', [this.validateId, this.findById]);
