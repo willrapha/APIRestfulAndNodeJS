@@ -8,6 +8,11 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         super();
     }
 
+    // <D,D> - tipos associados a DocumentQuery, trabalha com um tipo e retorna um tipo
+    protected prepareOne(query: mongoose.DocumentQuery<D,D>): mongoose.DocumentQuery<D,D> {
+        return query;
+    }
+
     // Metodo resposavel por verificar o formato do id se esta valido
     validateId = (req, resp, next) => {
         if(!mongoose.Types.ObjectId.isValid(req.params.id)){
@@ -17,14 +22,15 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         }
     }
 
+    // utilizamos IronFunction porque em runtime iriamos perder a referencia na chamada o 'this.model'
     findAll = (req, resp, next) => {
-        this.model.find()
+        this.model.find() // this.model
             .then(this.renderAll(resp,next))
             .catch(next);
     }
 
     findById = (req, resp, next) => {
-        this.model.findById(req.params.id)
+        this.prepareOne(this.model.findById(req.params.id)) // prepareOne - DocumentQuery
             .then(this.render(resp,next))
             .catch(next);
     }
@@ -60,7 +66,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
             .catch(next);
     }
 
-    remove = (req, resp, next) => {
+    delete = (req, resp, next) => {
         // exec() - chamamos o metodo exec() para executar os comandos e retornar o resultado
         this.model.remove({_id: req.params.id}).exec().then((cmdResult: any) => { 
             if(cmdResult.result.n){ // se foi removido algum documento

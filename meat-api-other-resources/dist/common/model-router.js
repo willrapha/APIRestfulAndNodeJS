@@ -16,13 +16,14 @@ class ModelRouter extends router_1.Router {
                 next();
             }
         };
+        // utilizamos IronFunction porque em runtime iriamos perder a referencia na chamada o 'this.model'
         this.findAll = (req, resp, next) => {
-            this.model.find()
+            this.model.find() // this.model
                 .then(this.renderAll(resp, next))
                 .catch(next);
         };
         this.findById = (req, resp, next) => {
-            this.model.findById(req.params.id)
+            this.prepareOne(this.model.findById(req.params.id)) // prepareOne - DocumentQuery
                 .then(this.render(resp, next))
                 .catch(next);
         };
@@ -55,7 +56,7 @@ class ModelRouter extends router_1.Router {
                 .then(this.render(resp, next))
                 .catch(next);
         };
-        this.remove = (req, resp, next) => {
+        this.delete = (req, resp, next) => {
             // exec() - chamamos o metodo exec() para executar os comandos e retornar o resultado
             this.model.remove({ _id: req.params.id }).exec().then((cmdResult) => {
                 if (cmdResult.result.n) { // se foi removido algum documento
@@ -68,6 +69,10 @@ class ModelRouter extends router_1.Router {
             })
                 .catch(next);
         };
+    }
+    // <D,D> - tipos associados a DocumentQuery, trabalha com um tipo e retorna um tipo
+    prepareOne(query) {
+        return query;
     }
 }
 exports.ModelRouter = ModelRouter;

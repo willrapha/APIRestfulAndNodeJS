@@ -18,7 +18,7 @@ class UsersRouter extends ModelRouter<User> {
         application.post('/users', this.save);
         application.put('/users/:id', [this.validateId, this.replace]);
         application.patch('/users/:id', [this.validateId, this.update]);
-        application.del('/users/:id', [this.validateId, this.remove]);
+        application.del('/users/:id', [this.validateId, this.delete]);
     };
 }
 export const usersRouter = new UsersRouter()
